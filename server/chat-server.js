@@ -26,7 +26,7 @@ ws.on('connection', (ws) => {
             } else {
               ws.send(
                 JSON.stringify({
-                  type: 'LOGIN',
+                  type: 'LOGGEDIN',
                   data: {
                     session: result,
                     user: user,
