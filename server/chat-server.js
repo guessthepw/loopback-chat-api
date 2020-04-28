@@ -2,6 +2,8 @@ const WebSocket = require('ws');
 var models = require('./server.js').models;
 
 const ws = new WebSocket.Server({ port: 8080 });
+const clients = [];
+
 ws.on('connection', (ws) => {
   function login(email, password) {
     models.User.login({ email: email, password: password }, (err, result) => {
@@ -24,6 +26,14 @@ ws.on('connection', (ws) => {
                 })
               );
             } else {
+              const userObject = {
+                id: user.id,
+                email: user.email,
+                ws: ws,
+              };
+
+              clients.push(userObject);
+              console.log('Current Clients ', clients);
               ws.send(
                 JSON.stringify({
                   type: 'LOGGEDIN',
